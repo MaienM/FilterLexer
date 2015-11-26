@@ -42,11 +42,11 @@ grammar FilterLexer
 	end
 
 	rule or_operator
-		'' ('||' / 'OR') <OrOperator>
+		'' ('||' / 'OR' / 'or') <OrOperator>
 	end
 
 	rule and_operator
-		'' ('&&' / 'AND') <AndOperator>
+		'' ('&&' / 'AND' / 'and') <AndOperator>
 	end
 
 	# Operators
@@ -68,7 +68,7 @@ grammar FilterLexer
 	end
 
 	rule neq_operator
-		'!=' <NEQOperator>
+		'' ('!=' / '<>') <NEQOperator>
 	end
 
 	rule lt_operator
@@ -88,11 +88,11 @@ grammar FilterLexer
 	end
 
 	rule yes_like_operator
-		'' ('like' / 'LIKE') <LikeOperator>
+		'' ('like' / 'LIKE' / '~=') <LikeOperator>
 	end
 
 	rule not_like_operator
-		('not' / 'NOT') ' ' ('like' / 'LIKE') <NotLikeOperator>
+		'' ('!~=' / 'NOT LIKE' / 'not like') <NotLikeOperator>
 	end
 
 	# Literals
@@ -158,7 +158,7 @@ grammar FilterLexer
 	end
 
 	rule identifier
-		[a-zA-Z] [a-zA-Z0-9_\-]* <Identifier>
+		[a-zA-Z] [a-zA-Z0-9_]* <Identifier>
 	end
 
 	# Whitespace
