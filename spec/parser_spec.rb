@@ -2,11 +2,11 @@ require 'spec_helper'
 
 RSpec.describe FilterLexer::Parser do
 	before do
-		@parser = FilterLexer::Parser.class_variable_get('@@parser')
+		@parser = FilterLexer::Parser.instance_variable_get('@parser')
 	end
 
 	describe '.parse' do
-		TESTS = {
+		@tests = {
 			identifier: {
 				success: %w(foo FOO fOo foo_bar foo0),
 				failure: ['_foo', '8bar', 'foo-bar'],
@@ -89,10 +89,14 @@ RSpec.describe FilterLexer::Parser do
 			},
 		}
 
-		TESTS.each do |node, examples|
+		@tests.each do |node, examples|
 			describe "with root = :#{node}" do
 				before do
 					@parser.root = node
+				end
+
+				after do
+					@parser.root = :expression
 				end
 
 				examples = { success: [*examples], failure: [] } unless examples.is_a?(Hash)

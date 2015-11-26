@@ -25,15 +25,21 @@ module FilterLexer
 
 	class Filter
 		def query_string
-			return "#{elements[0].sql} #{elements[1].sql} ?"
+			return "#{identifier.sql} #{operator.sql} ?"
 		end
 
 		def query_variables
-			return [elements[2].sql]
+			return [data.sql]
 		end
 	end
 
-	class Operator
+	class Identifier
+		def sql
+			return "`#{text_value}`"
+		end
+	end
+
+	class LogicOperator
 		def query_string
 			return sql
 		end
@@ -55,16 +61,26 @@ module FilterLexer
 		end
 	end
 
+	class Operator
+		def query_string
+			return sql
+		end
+
+		def query_variables
+			return []
+		end
+	end
+
 	class EQOperator
 		def sql
-			return 'IS' if parent.value_class < ValueSpecial
+			return 'IS' if parent.data.is_a?(ValueSpecial)
 			return '='
 		end
 	end
 
 	class NEQOperator
 		def sql
-			return 'IS NOT' if parent.value_class < ValueSpecial
+			return 'IS NOT' if parent.data.is_a?(ValueSpecial)
 			return '<>'
 		end
 	end
@@ -130,12 +146,6 @@ module FilterLexer
 	end
 
 	class NumberLiteral
-		def sql
-			return text_value
-		end
-	end
-
-	class Identifier
 		def sql
 			return text_value
 		end

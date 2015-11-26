@@ -6,10 +6,19 @@ require 'filter_lexer/nodes'
 require 'filter_lexer/syntax.treetop'
 
 module FilterLexer
+	# The parser is your main entrypoint for the lexer
+	#
+	# You never instantiate it, you just use it's static methods
 	class Parser
 		@parser = FilterLexerParser.new
 
 		class << self
+			# The bread and butter of the entire thing: parsing, and it's pretty simple
+			#
+			# Just pass in a string, and out comes a parsed tree, or an exception
+			#
+			# The parsed tree will always be an FilterLexer::Expression object
+			# The exception will always be an FilterLexer::ParseException object
 			def parse(data)
 				# Pass the data over to the parser instance
 				tree = @parser.parse(data)
@@ -23,6 +32,10 @@ module FilterLexer
 				return tree
 			end
 
+			# When using the lexer, it may be useful to have a visual representation of the tree
+			#
+			# Just pass the tree (or any node in it, if you're only interested in that part) to this function, and a visual
+			# representation of the tree will magically appear in stdout
 			def output_tree(element, indent = '')
 				puts "#{indent}#{element.class}: #{element.text_value}"
 				(element.elements || []).each do |e|
