@@ -1,0 +1,169 @@
+grammar FilterLexer
+	# Complex combinations
+
+	rule expression
+		space? (expression_compound / body) space? <Expression>
+	end
+
+	rule expression_compound
+		body space? combine_operator space? expression <Expression>
+	end
+
+	rule body
+		group / filter
+	end
+
+	rule group
+		'(' expression ')' <Group>
+	end
+
+	# Filters
+
+	rule filter 
+		filter_equality / filter_comparison / filter_like
+	end
+
+	rule filter_equality
+		identifier space? equality_operator space? value <Filter>
+	end
+
+	rule filter_comparison
+		identifier space? comparison_operator space? number <Filter>
+	end
+
+	rule filter_like
+		identifier space like_operator space string <Filter>
+	end
+
+	# Logic
+
+	rule combine_operator
+		or_operator / and_operator
+	end
+
+	rule or_operator
+		'' ('||' / 'OR') <OrOperator>
+	end
+
+	rule and_operator
+		'' ('&&' / 'AND') <AndOperator>
+	end
+
+	# Operators
+
+	rule equality_operator
+		eq_operator / neq_operator
+	end
+
+	rule comparison_operator
+		le_operator / lt_operator / ge_operator / gt_operator
+	end
+
+	rule like_operator
+		yes_like_operator / not_like_operator
+	end
+
+	rule eq_operator
+		'==' <EQOperator>
+	end
+
+	rule neq_operator
+		'!=' <NEQOperator>
+	end
+
+	rule lt_operator
+		'<' <LTOperator>
+	end
+
+	rule le_operator
+		'<=' <LEOperator>
+	end
+
+	rule gt_operator
+		'>' <GTOperator>
+	end
+
+	rule ge_operator
+		'>=' <GEOperator>
+	end
+
+	rule yes_like_operator
+		'' ('like' / 'LIKE') <LikeOperator>
+	end
+
+	rule not_like_operator
+		('not' / 'NOT') ' ' ('like' / 'LIKE') <NotLikeOperator>
+	end
+
+	# Literals
+
+	rule value
+		value_special / number / string
+	end
+
+	rule value_special
+		null / boolean 
+	end
+
+	rule number
+		number_sign? (number_float / number_integer) number_exponent? <NumberLiteral>
+	end
+
+	rule number_integer
+		number_base
+	end
+
+	rule number_float
+		number_base '.' number_base
+	end
+
+	rule number_sign
+		'+' / '-'
+	end
+
+	rule number_exponent
+		'e' number_base
+	end
+
+	rule number_base
+		[0-9]+
+	end
+
+	rule boolean
+		boolean_true / boolean_false
+	end
+
+	rule boolean_true
+		'' ('true' / 'TRUE' / 'on' / 'ON' / 'yes' / 'YES') <BooleanLiteralTrue>
+	end
+
+	rule boolean_false
+		'' ('false' / 'FALSE' / 'off' / 'OFF' / 'no' / 'NO') <BooleanLiteralFalse>
+	end
+
+	rule null
+		'' ('null' / 'NULL' / 'nil' / 'NIL' / 'nul' / 'NUL') <NullLiteral>
+	end
+
+	rule string
+		string_single / string_double
+	end
+
+	rule string_single
+		"'" ([^'\\] / "\\" . )* "'" <StringLiteral>
+	end
+
+	rule string_double
+		'"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+	end
+
+	rule identifier
+		[a-zA-Z] [a-zA-Z0-9_\-]* <Identifier>
+	end
+
+	# Whitespace
+
+	rule space
+		[\s]+
+	end
+end
