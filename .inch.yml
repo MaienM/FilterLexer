@@ -1,0 +1,6 @@
+files:
+   included:
+      - lib/**/.rb
+   excluded:
+      - lib/filter_lexer/formatters/**/*.rb
+
