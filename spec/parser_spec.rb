@@ -65,6 +65,7 @@ RSpec.describe FilterLexer::Parser do
 					'   foo=="BAR"   ',
 					'(foo == "BAR")',
 					'(    foo == "BAR"  )',
+					'(foo == "BAR)")',
 					'foo == "BAR" && bar ~= "HE%LO"',
 					'(foo == "BAR" && bar ~= "HE%LO")',
 					'(foo == "BAR" && bar ~= "HE%LO") || foo == "BARR"',
