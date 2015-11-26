@@ -1,4 +1,4 @@
-# FilterLexer
+# FilterLexer [![Dependency Status](https://gemnasium.com/MaienM/FilterLexer.svg)](https://gemnasium.com/MaienM/FilterLexer)
 
 This is a simple treetop implementation for a basic SQL-like filtering syntax.
 

@@ -89,4 +89,3 @@ module FilterLexer
 	class Identifier < Treetop::Runtime::SyntaxNode
 	end
 end
-

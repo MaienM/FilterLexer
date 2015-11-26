@@ -5,21 +5,21 @@ module FilterLexer
 		end
 
 		def query_string
-			return self.elements.map { |e| e.query_string }.join(' ')
+			return elements.map(&:query_string).join(' ')
 		end
 
 		def query_variables
-			return self.elements.map { |e| e.query_variables }.flatten
+			return elements.map(&:query_variables).flatten
 		end
 	end
 
 	class Group
 		def query_string
-			return "(#{self.elements.first.query_string})"
+			return "(#{elements.first.query_string})"
 		end
 
 		def query_variables
-			return self.elements.first.query_variables
+			return elements.first.query_variables
 		end
 	end
 
@@ -28,17 +28,17 @@ module FilterLexer
 			return "#{elements[0].sql} #{elements[1].sql} ?"
 		end
 
-		def query_variables 
+		def query_variables
 			return [elements[2].sql]
 		end
 	end
 
 	class Operator
 		def query_string
-			return self.sql
+			return sql
 		end
 
-		def query_variables 
+		def query_variables
 			return []
 		end
 	end
@@ -125,19 +125,19 @@ module FilterLexer
 
 	class StringLiteral
 		def sql
-			return self.text_value
+			return text_value
 		end
 	end
 
 	class NumberLiteral
 		def sql
-			return self.text_value
+			return text_value
 		end
 	end
 
 	class Identifier
 		def sql
-			return self.text_value
+			return text_value
 		end
 	end
 end

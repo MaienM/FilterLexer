@@ -1,24 +1,21 @@
 require 'treetop'
 
-require "filter_lexer/version"
-require "filter_lexer/exceptions"
-require "filter_lexer/nodes"
+require 'filter_lexer/version'
+require 'filter_lexer/exceptions'
+require 'filter_lexer/nodes'
 require 'filter_lexer/syntax.treetop'
 
 module FilterLexer
 	class Parser
-		@@parser = FilterLexerParser.new
+		@parser = FilterLexerParser.new
 
 		class << self
 			def parse(data)
 				# Pass the data over to the parser instance
-				tree = @@parser.parse(data)
+				tree = @parser.parse(data)
 
 				# If the AST is nil then there was an error during parsing
-				# we need to report a simple error message to help the user
-				if tree.nil?
-					raise ParseException, @@parser
-				end
+				fail ParseException, @parser if tree.nil?
 
 				# Cleanup the tree
 				clean_tree(tree)
@@ -35,7 +32,7 @@ module FilterLexer
 
 			private
 
-			def is_syn(node)
+			def syn?(node)
 				return node.class.name == 'Treetop::Runtime::SyntaxNode'
 			end
 
@@ -48,9 +45,9 @@ module FilterLexer
 				# Clean child elements
 				root_node.elements.each { |node| clean_tree(node) }
 				# Remove empty syntax elements
-				root_node.elements.reject! { |node| node_elem(node).empty? && is_syn(node) }
+				root_node.elements.reject! { |node| node_elem(node).empty? && syn?(node) }
 				# Replace syntax elements with just one child with that child
-				root_node.elements.map! { |node| (node_elem(node).size == 1 && is_syn(node)) ? node.elements.first : node }
+				root_node.elements.map! { |node| (node_elem(node).size == 1 && syn?(node)) ? node.elements.first : node }
 			end
 		end
 	end

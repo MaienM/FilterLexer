@@ -8,13 +8,13 @@ RSpec.describe FilterLexer::Parser do
 	describe '.parse' do
 		TESTS = {
 			identifier: {
-				success: ['foo', 'FOO', 'fOo', 'foo_bar', 'foo0'],
+				success: %w(foo FOO fOo foo_bar foo0),
 				failure: ['_foo', '8bar', 'foo-bar'],
 			},
 
 			boolean: {
-				success: ['true', 'TRUE', 'on', 'ON', 'yes', 'YES', 'false', 'FALSE', 'off', 'OFF', 'no', 'NO'],
-				failure: ['1', '0', 'True', 'False'],
+				success: %w(true TRUE on ON yes YES false FALSE off OFF no NO),
+				failure: %w(1 0 True False),
 			},
 			number: {
 				success: ['1', '-1', '+1', '1e1', '-1e1', '+1e1', '1.1', '-1.1', '+1.1', '1.1e1', '-1.1e1', '+1.1e1'],
@@ -25,8 +25,8 @@ RSpec.describe FilterLexer::Parser do
 				failure: ['foo', '"foo', 'foo"', "'foo", "foo'", '"foo\'', '"foo\\\\"bar"', "'foo\\\\'bar'"],
 			},
 			null: {
-				success: ['null', 'NULL', 'nul', 'NUL', 'nil', 'NIL'],
-				failure: ['NuLL', 'NiL', 'NuL'],
+				success: %w(null NULL nul NUL nil NIL),
+				failure: %w(NuLL NiL NuL),
 			},
 
 			like_operator: ['like', 'LIKE', '~='],
@@ -58,7 +58,7 @@ RSpec.describe FilterLexer::Parser do
 					'foo > null',
 				],
 			},
-			
+
 			expression: {
 				success: [
 					'foo == "BAR"',
@@ -86,7 +86,7 @@ RSpec.describe FilterLexer::Parser do
 					'foo == "BAR" &&',
 					'(foo) == "BAR"',
 				],
-			}
+			},
 		}
 
 		TESTS.each do |node, examples|

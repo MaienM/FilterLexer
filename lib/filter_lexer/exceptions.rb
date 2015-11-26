@@ -10,19 +10,18 @@ module FilterLexer
 		end
 
 		def context
-			i1 = @index - 40
-			i1 = 0 if i1 < 0
-			i2 = @index + 40
-			i2 = @input.size if i2 > @input.size
+			size = @input.size
+			i1 = [0, @index - 40].max
+			i2 = [size, @index + 40].min
 
 			context = @input.slice(i1..i2)
-			if i1 > 0
-				context = "...#{context}"
-				i1 -= 3
-			end
-			context = "#{context}..." if i2 < @input.size 
+			context = "...#{context}" if i1 > 0
+			context = "#{context}..." if i2 < size
 
-			return context + "\r\n" + ' ' * (@index - i1) + '^'
+			relpos = @index - i1
+			relpos += 1 if i1 > 0
+
+			return context + "\r\n" + ' ' * relpos + '^'
 		end
 	end
 end

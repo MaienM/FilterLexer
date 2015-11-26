@@ -9,15 +9,15 @@ Gem::Specification.new do |spec|
 	spec.authors       = ['Michon van Dooren']
 	spec.email         = ['michon1992@gmail.com']
 
-	spec.summary       = %q{A basic lexer that supports basic sql-like filtering logic.}
-	spec.description   = %q{Simple treetop lexer that supports writing filters in an SQL-like manner.}
+	spec.summary       = 'A basic lexer that supports basic sql-like filtering logic.'
+	spec.description   = 'Simple treetop lexer that supports writing filters in an SQL-like manner.'
 	spec.homepage      = 'http://github.com/MaienM/FilterLexer'
 	spec.license       = 'MIT'
 
 	if spec.respond_to?(:metadata)
 		spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 	else
-		raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
+		fail 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
 	end
 
 	spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
 	spec.add_development_dependency 'bundler', '~> 1.10'
 	spec.add_development_dependency 'rake', '~> 10.0'
 	spec.add_development_dependency 'rspec'
+	spec.add_development_dependency 'rubocop'
 	spec.add_dependency 'treetop', '~> 1.6'
 end
