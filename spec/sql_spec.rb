@@ -5,9 +5,9 @@ RSpec.describe 'filter_lexer/formatters/sql' do
 	describe FilterLexer::Expression do
 		describe '.to_query' do
 			@tests = {
-				'foo == "BAR"' => ['`foo` = ?', '"BAR"'],
-				'foo == null' => ['`foo` IS ?', 'NULL'],
-				'foo == "BAR" && bar == null' => ['`foo` = ? AND `bar` IS ?', '"BAR"', 'NULL'],
+				'foo == "BAR"' => ['`foo` = ?', 'BAR'],
+				'foo == null' => ['`foo` IS ?', nil],
+				'foo == "BAR" && bar == null' => ['`foo` = ? AND `bar` IS ?', 'BAR', nil],
 			}
 
 			@tests.each do |input, output|

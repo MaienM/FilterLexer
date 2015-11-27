@@ -28,11 +28,11 @@ grammar FilterLexer
 	end
 
 	rule filter_comparison
-		identifier space? comparison_operator space? number <Filter>
+		identifier space? comparison_operator space? (number / datetime) <Filter>
 	end
 
 	rule filter_like
-		identifier space like_operator space string <Filter>
+		identifier space? like_operator space? string <Filter>
 	end
 
 	# Logic
@@ -64,45 +64,41 @@ grammar FilterLexer
 	end
 
 	rule eq_operator
-		'==' <EQOperator>
+		'' ('==' / 'eq' / 'EQ' / 'is' / 'IS') <EQOperator>
 	end
 
 	rule neq_operator
-		'' ('!=' / '<>') <NEQOperator>
+		'' ('!=' / '<>' / 'neq' / 'NEQ' / 'not is' / 'NOT IS' / 'is not' / 'IS NOT') <NEQOperator>
 	end
 
 	rule lt_operator
-		'<' <LTOperator>
+		'' ('<' / 'lt' / 'LT') <LTOperator>
 	end
 
 	rule le_operator
-		'<=' <LEOperator>
+		'' ('<=' / 'le' / 'LE') <LEOperator>
 	end
 
 	rule gt_operator
-		'>' <GTOperator>
+		'' ('>' / 'gt' / 'GT') <GTOperator>
 	end
 
 	rule ge_operator
-		'>=' <GEOperator>
+		'' ('>=' / 'ge' / 'GE') <GEOperator>
 	end
 
 	rule yes_like_operator
-		'' ('like' / 'LIKE' / '~=') <LikeOperator>
+		'' ('=~' / 'like' / 'LIKE') <LikeOperator>
 	end
 
 	rule not_like_operator
-		'' ('!~=' / 'NOT LIKE' / 'not like') <NotLikeOperator>
+		'' ('!=~' / 'not like' / 'NOT LIKE') <NotLikeOperator>
 	end
 
 	# Literals
 
 	rule value
-		value_special / number / string
-	end
-
-	rule value_special
-		null / boolean 
+		null / boolean / number / datetime / string
 	end
 
 	rule number
@@ -134,27 +130,46 @@ grammar FilterLexer
 	end
 
 	rule boolean_true
-		'' ('true' / 'TRUE' / 'on' / 'ON' / 'yes' / 'YES') <BooleanLiteralTrue>
+		'' ('true' / 'TRUE' / 'on' / 'ON' / 'yes' / 'YES') <BooleanLiteral> {
+			def data
+				return true
+			end
+		}
 	end
 
 	rule boolean_false
-		'' ('false' / 'FALSE' / 'off' / 'OFF' / 'no' / 'NO') <BooleanLiteralFalse>
+		'' ('false' / 'FALSE' / 'off' / 'OFF' / 'no' / 'NO') <BooleanLiteral> {
+			def data
+				return false
+			end
+		}
 	end
 
 	rule null
 		'' ('null' / 'NULL' / 'nil' / 'NIL' / 'nul' / 'NUL') <NullLiteral>
 	end
 
+	rule datetime
+		string &{ |s|
+			begin
+				DateTime.parse(s.first.data)
+				return true
+			rescue
+				return false
+			end
+		} <DatetimeLiteral>
+	end
+
 	rule string
-		string_single / string_double
+		'' (string_single / string_double) <StringLiteral>
 	end
 
 	rule string_single
-		"'" ([^'\\] / "\\" . )* "'" <StringLiteral>
+		"'" ([^'\\] / "\\" . )* "'"
 	end
 
 	rule string_double
-		'"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+		'"' ([^"\\] / "\\" . )* '"'
 	end
 
 	rule identifier

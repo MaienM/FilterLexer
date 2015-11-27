@@ -1,8 +1,11 @@
 require 'bundler/gem_tasks'
 require 'rubocop/rake_task'
 
-RuboCop::RakeTask.new(:rubocop, [:options]) do |task|
+RuboCop::RakeTask.new(:rubocop, [:options]) do |task, args|
 	task.options.push '--cache=false'
+
+	require 'shellwords'
+	task.options += Shellwords.shellsplit(args[:options]) unless args[:options].nil?
 end
 module RuboCop
 	# We use tabs for indentation, not spaces. As many of the RuboCop cops seem

@@ -27,6 +27,10 @@ Style/IndentationWidth:
 Style/MultilineOperationIndentation:
   EnforcedStyle: 'indented'
 
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%': '[]'
+
 Style/RedundantReturn:
   Enabled: false
 

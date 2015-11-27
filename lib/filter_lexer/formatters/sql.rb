@@ -29,7 +29,7 @@ module FilterLexer
 		end
 
 		def query_variables
-			return [data.sql]
+			return [data.data]
 		end
 	end
 
@@ -39,7 +39,7 @@ module FilterLexer
 		end
 	end
 
-	class LogicOperator
+	class LogicalOperator
 		def query_string
 			return sql
 		end
@@ -61,7 +61,7 @@ module FilterLexer
 		end
 	end
 
-	class Operator
+	class RelationalOperator
 		def query_string
 			return sql
 		end
@@ -73,15 +73,23 @@ module FilterLexer
 
 	class EQOperator
 		def sql
-			return 'IS' if parent.data.is_a?(ValueSpecial)
-			return '='
+			case parent.data
+				when BooleanLiteral, NullLiteral
+					return 'IS'
+				else
+					return '='
+			end
 		end
 	end
 
 	class NEQOperator
 		def sql
-			return 'IS NOT' if parent.data.is_a?(ValueSpecial)
-			return '<>'
+			case parent.data
+				when BooleanLiteral, NullLiteral
+					return 'IS NOT'
+				else
+					return '<>'
+			end
 		end
 	end
 
@@ -109,45 +117,15 @@ module FilterLexer
 		end
 	end
 
-	class NotLikeOperator
-		def sql
-			return 'NOT LIKE'
-		end
-	end
-
 	class LikeOperator
 		def sql
 			return 'LIKE'
 		end
 	end
 
-	class BooleanLiteralFalse
+	class NotLikeOperator
 		def sql
-			return 'FALSE'
-		end
-	end
-
-	class BooleanLiteralTrue
-		def sql
-			return 'TRUE'
-		end
-	end
-
-	class NullLiteral
-		def sql
-			return 'NULL'
-		end
-	end
-
-	class StringLiteral
-		def sql
-			return text_value
-		end
-	end
-
-	class NumberLiteral
-		def sql
-			return text_value
+			return 'NOT LIKE'
 		end
 	end
 end
