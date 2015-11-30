@@ -1,5 +1,5 @@
 module FilterLexer
-	class ParseException < Exception
+	class ParseException < StandardError
 		def initialize(parser)
 			@index = parser.failure_index
 			@input = parser.input
