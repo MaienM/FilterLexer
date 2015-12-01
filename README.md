@@ -1,4 +1,4 @@
-# FilterLexer [![Dependency Status](https://gemnasium.com/MaienM/FilterLexer.svg)](https://gemnasium.com/MaienM/FilterLexer) [![Inline docs](http://inch-ci.org/github/MaienM/FilterLexer.svg?branch=master)](http://inch-ci.org/github/MaienM/FilterLexer)
+# FilterLexer [![Gem Version](https://badge.fury.io/rb/filter_lexer.svg)](https://badge.fury.io/rb/filter_lexer) [![Dependency Status](https://gemnasium.com/MaienM/FilterLexer.svg)](https://gemnasium.com/MaienM/FilterLexer) [![Inline docs](http://inch-ci.org/github/MaienM/FilterLexer.svg?branch=master)](http://inch-ci.org/github/MaienM/FilterLexer)
 
 This is a simple treetop implementation for a basic SQL-like filtering syntax.
 
