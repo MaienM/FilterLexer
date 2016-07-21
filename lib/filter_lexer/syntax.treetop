@@ -173,7 +173,7 @@ grammar FilterLexer
 	end
 
 	rule identifier
-		[a-zA-Z] [a-zA-Z0-9_]* <Identifier>
+		[a-zA-Z] [a-zA-Z0-9_.]* <Identifier>
 	end
 
 	# Whitespace

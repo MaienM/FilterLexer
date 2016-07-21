@@ -8,7 +8,7 @@ RSpec.describe FilterLexer::Parser do
 	describe '.parse' do
 		@tests = {
 			identifier: {
-				success: %w(foo FOO fOo foo_bar foo0),
+				success: %w(foo FOO fOo foo_bar foo0 foo.bar),
 				failure: %w(_foo 8bar foo-bar foo\ bar),
 			},
 
